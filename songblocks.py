@@ -5,8 +5,28 @@ from soco import SoCo
 from time import sleep
 import time
 import nfc
+import math
+import Adafruit_CharLCD as LCD
+
 #from _common import get_api
 #import tweetpony
+
+# Set which pins on the PI are being used to control the LCD
+lcd_rs        = 27  
+lcd_en        = 22
+lcd_d4        = 25
+lcd_d5        = 24
+lcd_d6        = 23
+lcd_d7        = 18
+lcd_backlight = 4
+
+# Define LCD column and row size for 16x2 LCD.
+lcd_columns = 16
+lcd_rows    = 2
+
+# Initialize the LCD using the pins above.
+lcd = LCD.Adafruit_CharLCD(lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7,
+                                                        lcd_columns, lcd_rows, lcd_backlight)
 
 # this function gets called when a NFC tag is detected
 def touched(tag):
@@ -24,6 +44,7 @@ def touched(tag):
            
             if tag_text == "peter1":
                 print "Playing Song 1"
+                
                 play_song(1)
             elif tag_text == "peter2":
                 print "Playing Song 2"
@@ -40,10 +61,12 @@ def play_song(song_number):
     if song_number == 1:
         sonos.play_uri("x-sonos-spotify:spotify%3atrack%3a0mWTKA9sDTZjzRua0pzDHx?sid=9&flags=32&sn=1")
         print "Playing Nina Simone: Ain't Got No, I Got Life - Remix - Radio Edit"
+        lcd.message("Nina Simone\nAin't Got No, I Got Life - Remix")
     elif song_number == 2:
         sonos.play_uri("x-sonos-spotify:spotify%3atrack%3a5unfeZUhKhICP73CDYBW4N?sid=9&flags=32&sn=1")
         sonos.seek('00:00:04')
         print "Playing Carly Rae Jepsen: Call Me Maybe"
+        lcd.message("Carly Rae Jepsen\nCall Me Maybe")
 
             
 
@@ -144,6 +167,7 @@ while True:
     reader.connect(rdwr={'on-connect': touched})
     print("Tag released")
     sonos.stop()
+    lcd.clear()
     print ("Sonos stopped")
     print ("---")
     print ("")
