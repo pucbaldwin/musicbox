@@ -9,7 +9,7 @@ import math
 import Adafruit_CharLCD as LCD
 
 #from _common import get_api
-#import tweetpony
+import tweetpony
 
 # Set which pins on the PI are being used to control the LCD
 lcd_rs        = 27  
@@ -66,7 +66,15 @@ def play_song(song_number):
         sonos.play_uri("x-sonos-spotify:spotify%3atrack%3a5unfeZUhKhICP73CDYBW4N?sid=9&flags=32&sn=1")
         sonos.seek('00:00:04')
         print "Playing Carly Rae Jepsen: Call Me Maybe"
+        lcd.clear()
         lcd.message("Carly Rae Jepsen\nCall Me Maybe")
+        tweet_text = "Maya is listening to Call Me Maybe by Carly Rae Jepsen"
+        try:
+            api.update_status(status = tweet_text)
+        except tweetpony.APIError as err:
+            print "Oops, something went wrong! Twitter returned error #%i and said: %s" % (err.code, err.description)
+        else:
+            print "Tweet sent successfully"
 
             
 
@@ -135,12 +143,13 @@ songs = {
 }
 
 # Twitter setup
-##print("Connecting to Twitter...")
-##twitter_api = get_api()
-##if twitter_api:
-##    print ("Connected to Twitter")
+print("Connecting to Twitter...")
+api = tweetpony.API(consumer_key = "xxx", consumer_secret = "xxx", access_token = "xxx", access_token_secret = "xxx")
+user = api.user
+print "Connected to Twitter as @%s!" % user.screen_name
+
 ##else:
-##    print ("Twitter connection error")
+  ##  print ("Twitter connection error")
 ##print ("")
 
 
@@ -162,6 +171,8 @@ reader = nfc.ContactlessFrontend('tty:AMA0:pn53x')
 print(reader)
 print("Ready!")
 print("")
+lcd.message('Do you want to\nhear a tune?')
+lcd.blink(True)
 
 while True:
     reader.connect(rdwr={'on-connect': touched})
