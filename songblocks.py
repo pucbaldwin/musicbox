@@ -1,14 +1,19 @@
   
 #!/usr/bin/env python
-#from __future__ import print_function
+# from __future__ import print_function
 from soco import SoCo
 from time import sleep
 import time
 import nfc
 import math
+
+# import the library to control the LCD
 import Adafruit_CharLCD as LCD
 
-#from _common import get_api
+# import the My_Consumer_Key, My_Consumer_Secret, My_Access_Token & My_Token_Secret variables from the Secrets.py file
+from Secrets import *
+
+# import the twitter library
 import tweetpony
 
 # Set which pins on the PI are being used to control the LCD
@@ -25,8 +30,7 @@ lcd_columns = 16
 lcd_rows    = 2
 
 # Initialize the LCD using the pins above.
-lcd = LCD.Adafruit_CharLCD(lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7,
-                                                        lcd_columns, lcd_rows, lcd_backlight)
+lcd = LCD.Adafruit_CharLCD(lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7, lcd_columns, lcd_rows, lcd_backlight)
 
 # this function gets called when a NFC tag is detected
 def touched(tag):
@@ -36,7 +40,6 @@ def touched(tag):
         isNight = 1
 
     if tag.ndef:
-        #print tag.ndef.message.pretty()
         message = tag.ndef.message
         for record in message:
             tag_text = nfc.ndef.TextRecord(record).text
@@ -144,7 +147,7 @@ songs = {
 
 # Twitter setup
 print("Connecting to Twitter...")
-api = tweetpony.API(consumer_key = "xxx", consumer_secret = "xxx", access_token = "xxx", access_token_secret = "xxx")
+api = tweetpony.API(consumer_key = My_Consumer_Key, consumer_secret = My_Consumer_Secret, access_token = My_Access_Token, access_token_secret = My_Token_Secret)
 user = api.user
 print "Connected to Twitter as @%s!" % user.screen_name
 
