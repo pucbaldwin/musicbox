@@ -147,12 +147,11 @@ songs = {
 
 # Twitter setup
 print("Connecting to Twitter...")
-lcd.message('Connecting to Twitter')
 api = tweetpony.API(consumer_key = My_Consumer_Key, consumer_secret = My_Consumer_Secret, access_token = My_Access_Token, access_token_secret = My_Token_Secret)
 user = api.user
 print "Connected to Twitter as @%s!" % user.screen_name
 lcd.clear()
-lcd.message('Connected to Twitter')
+lcd.message('Connected to\nTwitter')
 ##else:
   ##  print ("Twitter connection error")
 ##print ("")
@@ -162,7 +161,8 @@ lcd.message('Connected to Twitter')
 print("Connecting to Sonos...")
 sonos = SoCo(sonos_ip)
 print ("Connected to Sonos: " + sonos.player_name)
-
+lcd.clear()
+lcd.message('Connected to\nSonos & Twitter')
 # Use this section to get the URIs of new songs we want to add
 info = sonos.get_current_track_info()
 print("Currently Playing: " + info['title'])
@@ -176,7 +176,8 @@ reader = nfc.ContactlessFrontend('tty:AMA0:pn53x')
 print(reader)
 print("Ready!")
 print("")
-lcd.message('Do you want to\nhear a tune?')
+#lcd.clear()
+#lcd.message('Do you want to\nhear a tune?')
 lcd.blink(True)
 
 while True:
