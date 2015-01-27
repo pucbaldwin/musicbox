@@ -151,7 +151,8 @@ lcd.message('Connecting to Twitter')
 api = tweetpony.API(consumer_key = My_Consumer_Key, consumer_secret = My_Consumer_Secret, access_token = My_Access_Token, access_token_secret = My_Token_Secret)
 user = api.user
 print "Connected to Twitter as @%s!" % user.screen_name
-lcd.message('Connected to Twitter as %s') % user.screen_name
+lcd.clear()
+lcd.message('Connected to Twitter')
 ##else:
   ##  print ("Twitter connection error")
 ##print ("")
